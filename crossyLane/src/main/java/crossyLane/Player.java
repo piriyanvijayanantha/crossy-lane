@@ -20,7 +20,7 @@ public class Player {
         w = image.width * Constants.SPRITE_SCALE;
         h = image.height * Constants.SPRITE_SCALE;
 
-        x = Constants.WIDTH / 2;
+        x = (float) Constants.WIDTH / 2;
         laneIndex = 0;
     }
 

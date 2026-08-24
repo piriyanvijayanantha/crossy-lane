@@ -5,7 +5,7 @@ public class Constants {
     static final int WIDTH = 600;
     static final int HEIGHT = 800;
     static final int LANE_COUNT = 5;
-    static final float LANE_HEIGHT = HEIGHT / LANE_COUNT;
+    static final float LANE_HEIGHT = (float) HEIGHT / LANE_COUNT;
 
     //Images & Player
     static final float SPRITE_SCALE = (float) (50.0 / 128);
