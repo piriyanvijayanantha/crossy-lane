@@ -24,8 +24,17 @@ public class Player {
         laneIndex = 0;
     }
 
+    public int getLaneIndex() {
+        return laneIndex;
+    }
+
+    public int getCameraOffset() {
+        return Math.max(0, laneIndex - Constants.CAMERA_LOCK_ROW);
+    }
+
     private float getY() {
-        return Constants.HEIGHT - (laneIndex + 0.5f) * Constants.LANE_HEIGHT;
+        int row = laneIndex - getCameraOffset();
+        return Constants.HEIGHT - (row + 0.5f) * Constants.LANE_HEIGHT;
     }
 
     public void moveLeft() {
@@ -37,7 +46,7 @@ public class Player {
     }
 
     public void jumpUp() {
-        laneIndex = Math.min(Constants.LANE_COUNT - 1, laneIndex + 1);
+        laneIndex++;
     }
 
     public void jumpDown() {

@@ -4,6 +4,7 @@ import processing.core.PApplet;
 
 public class CrossyLaneApp extends PApplet {
     private Player player;
+    private LaneManager laneManager;
     private boolean leftPressed;
     private boolean rightPressed;
 
@@ -16,6 +17,7 @@ public class CrossyLaneApp extends PApplet {
     public void setup(){
         imageMode(CENTER);
         player = new Player(this);
+        laneManager = new LaneManager();
     }
 
     @Override
@@ -30,10 +32,23 @@ public class CrossyLaneApp extends PApplet {
     }
 
     private void drawLanes(){
-        stroke(0);
-        for (int i = 1; i < Constants.LANE_COUNT; i++) {
-            float y = i * Constants.LANE_HEIGHT;
-            line(0, y, Constants.WIDTH, y);
+        int cameraOffset = player.getCameraOffset();
+        textAlign(CENTER, CENTER);
+        textSize(24);
+
+        for (int row = 0; row < Constants.LANE_COUNT; row++) {
+            int laneIndex = cameraOffset + row;
+            LaneType type = laneManager.getType(laneIndex);
+            float centerY = Constants.HEIGHT - (row + 0.5f) * Constants.LANE_HEIGHT;
+
+            fill(0);
+            if (type != LaneType.START) {
+                text(type.getLabel(), Constants.WIDTH / 2f, centerY);
+            }
+
+            stroke(0);
+            float lineY = Constants.HEIGHT - row * Constants.LANE_HEIGHT;
+            line(0, lineY, Constants.WIDTH, lineY);
         }
     }
 
