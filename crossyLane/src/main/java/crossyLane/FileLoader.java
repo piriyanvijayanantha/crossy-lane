@@ -1,4 +1,4 @@
-package supermario;
+package crossyLane;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -9,12 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Objects;
 
-class FileLoader {
+public class FileLoader {
+
     private static final HashMap<String, PImage> imageCache = new HashMap<>();
     private static final HashMap<String, SoundFile> soundCache = new HashMap<>();
 
     public static String getPath(String filename){
-        String path = Objects.requireNonNull(FileLoader.class.getResource("/" + filename)).toExternalForm();
+        String path = Objects.requireNonNull(crossyLane.FileLoader.class.getResource("/" + filename)).toExternalForm();
         if(!path.contains(".jar!")) {
             path = URLDecoder.decode(path.replaceFirst("file:", ""), StandardCharsets.UTF_8);
         }
