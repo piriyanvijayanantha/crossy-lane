@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>HSI</groupId>
+    <groupId>FHNW</groupId>
     <artifactId>ProcessingTemplate</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
@@ -40,7 +40,7 @@
         <pi.jvmOptions/>
 
         <!-- Ant Dependencies -->
-        <ant-jsch.version>1.10.14</ant-jsch.version>
+        <ant-jsch.version>1.10.15</ant-jsch.version>
     </properties>
 
     <repositories>

@@ -1,11 +1,8 @@
 package crossyLane;
 
-import demoapp.DemoApp;
 import processing.core.PApplet;
 
 public class CrossyLaneApp extends PApplet {
-
-    private float x = 100;
 
     @Override
     public void settings(){
