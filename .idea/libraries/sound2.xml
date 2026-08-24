@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="sound2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/tritonus-share-0.3.7.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/vorbisspi-1.0.3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/jorbis-0.0.17.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/jsyn-17.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/jlayer-1.0.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/jportaudio.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/mp3spi-1.9.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ProcessingTemplate/src/main/resources/libraries/sound/sound.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
