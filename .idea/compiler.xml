@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="crossyLane" />
+        <module name="ProcessingTemplate" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="crossyLane" target="25" />
+    </bytecodeTargetLevel>
   </component>
 </project>
