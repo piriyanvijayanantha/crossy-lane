@@ -3,7 +3,8 @@ package crossyLane;
 public enum LaneType {
     START("Start"),
     SAFE("Safe"),
-    ROAD("Gefahr");
+    ROAD("Gefahr"),
+    RIVER("Fluss");
 
     private final String label;
 
