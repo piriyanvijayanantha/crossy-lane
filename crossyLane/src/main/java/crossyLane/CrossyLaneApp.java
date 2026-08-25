@@ -22,63 +22,66 @@ public class CrossyLaneApp extends PApplet {
 
     @Override
     public void draw(){
-        background(200);
-        drawLanes();
-
+        //calculate
         if (leftPressed) player.moveLeft();
         if (rightPressed) player.moveRight();
-
+        player.updateCamera();
+        //World
+        drawLanes();
+        //player komplett im Vordergrund immer
         player.display();
     }
 
     private void drawLanes(){
-        int cameraOffset = player.getCameraOffset();
+        float cameraOffset = player.getCameraOffset();
 
         drawLaneBackgrounds(cameraOffset);
         drawLaneContents(cameraOffset);
     }
 
-    private void drawLaneBackgrounds(int cameraOffset){
+    // Bildschirm-Y der Lane-Mitte. cameraOffset ist gebrochen, dadurch scrollt die Welt weich.
+    private float laneCenterY(int laneIndex, float cameraOffset){
+        return Constants.HEIGHT - (laneIndex - cameraOffset + 0.5f) * Constants.LANE_HEIGHT;
+    }
+
+    // Unterste sichtbare Lane. Eine Lane mehr zeichnen, weil bei gebrochenem Offset
+    // oben und unten je eine Lane nur halb im Bild liegt.
+    private int firstVisibleLane(float cameraOffset){
+        return Math.max(0, (int) Math.floor(cameraOffset));
+    }
+
+    private void drawLaneBackgrounds(float cameraOffset){
         noStroke();
 
-        for (int row = 0; row < Constants.LANE_COUNT; row++) {
-            LaneType type = laneManager.getType(cameraOffset + row);
+        int firstLane = firstVisibleLane(cameraOffset);
+        for (int laneIndex = firstLane; laneIndex <= firstLane + Constants.LANE_COUNT; laneIndex++) {
+            LaneType type = laneManager.getType(laneIndex);
 
             if (type == LaneType.RIVER) {
                 fill(Constants.RIVER_R, Constants.RIVER_G, Constants.RIVER_B);
             } else if (type == LaneType.ROAD) {
                 fill(Constants.ROAD_R, Constants.ROAD_G, Constants.ROAD_B);
             } else {
-                continue;
+                fill(Constants.LAWN_R, Constants.LAWN_G, Constants.LAWN_B);
             }
 
-            float topY = Constants.HEIGHT - (row + 1) * Constants.LANE_HEIGHT;
+            float topY = laneCenterY(laneIndex, cameraOffset) - Constants.LANE_HEIGHT / 2f;
             rect(0, topY, Constants.WIDTH, Constants.LANE_HEIGHT);
         }
     }
 
-    private void drawLaneContents(int cameraOffset){
+    private void drawLaneContents(float cameraOffset){
         textAlign(CENTER, CENTER);
         textSize(20);
 
-        for (int row = 0; row < Constants.LANE_COUNT; row++) {
-            int laneIndex = cameraOffset + row;
+        int firstLane = firstVisibleLane(cameraOffset);
+        for (int laneIndex = firstLane; laneIndex <= firstLane + Constants.LANE_COUNT; laneIndex++) {
             LaneType type = laneManager.getType(laneIndex);
-            float centerY = Constants.HEIGHT - (row + 0.5f) * Constants.LANE_HEIGHT;
+            float centerY = laneCenterY(laneIndex, cameraOffset);
 
             float topY = centerY - Constants.LANE_HEIGHT / 2f;
-            // Zwischen den beiden Auto-Spuren eine gestrichelte Mittellinie statt der schwarzen Trennlinie
             if (type == LaneType.ROAD && laneIndex % 2 == 0) {
                 drawRoadMarking(topY);
-            } else {
-                stroke(0);
-                line(0, topY, Constants.WIDTH, topY);
-            }
-
-            // Label nur einmal pro Block (auf der unteren der beiden Spuren)
-            if (type != LaneType.START && laneIndex % 2 == 0) {
-                fill(0);
-                text(type.getLabel(), Constants.WIDTH / 2f, centerY);
             }
 
             for (Car car : laneManager.getCars(laneIndex)) {

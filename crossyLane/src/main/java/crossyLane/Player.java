@@ -13,6 +13,7 @@ public class Player {
 
     private float x;
     private int laneIndex;
+    private float displayedCameraOffset;
 
     public Player(PApplet pApplet) {
         this.pApplet = pApplet;
@@ -22,18 +23,30 @@ public class Player {
 
         x = (float) Constants.WIDTH / 2;
         laneIndex = 0;
+        displayedCameraOffset = 0;
     }
 
     public int getLaneIndex() {
         return laneIndex;
     }
 
-    public int getCameraOffset() {
+    // Ziel wo die Kamera hin soll, springt immer um einen wert
+    public int getCameraOffsetTarget() {
         return Math.max(0, laneIndex - Constants.CAMERA_LOCK_ROW);
     }
 
+    // Wo die Kamera gerade ist aktuell, zieht jeden Frame ein stück Richtung Ziel nach
+    public void updateCamera() {
+        float target = getCameraOffsetTarget();
+        displayedCameraOffset += (target - displayedCameraOffset) * Constants.CAMERA_SMOOTH_FACTOR;
+    }
+
+    public float getCameraOffset() {
+        return displayedCameraOffset;
+    }
+
     private float getY() {
-        int row = laneIndex - getCameraOffset();
+        float row = laneIndex - displayedCameraOffset;
         return Constants.HEIGHT - (row + 0.5f) * Constants.LANE_HEIGHT;
     }
 

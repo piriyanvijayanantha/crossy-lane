@@ -16,16 +16,24 @@ Schritt 2: unlimitierte Lanes. Mit 5 Lanes im Screen aber per runtime immer wied
 
 Schritt 3: Bewegende hindernisse auf den Lanes platzieren mit horizonatler geschwindigkeit
 
-Schritt 4: HitBox erkennen. Eine kollision zwischen player und hinderniss führt zu gameOver. den screen müsste man auch erstellen.
+Schritt 4: HitBox erkennen. Eine kollision zwischen player und hinderniss führt zu gameOver. den GameOver screen müsste man auch erstellen.
 
-Schritt 5: Score = höchste erreichte Lane
+Schritt 5: Kamera smooth mitziehen
+
+Schritt 6: Score = höchste erreichte Lane
+
+Schritt 7: Startscreen mit Score anzeige und play again
+
+Schritt 8: Levels mir Random Logs und Cars und geschwindigkeit
+
+Schritt 9: Animationen und Sounds, jump animations...
 
 
 == Schwierigkeiten
 - Kamera View: da musste man zuerst schauen, wie man die kamera überhaupt will im sinn von was soll im zentrum stehen. eine Schwierigkeit war es den spieler zwar im zentrum zu stellen, aber es immernoch so auszusehen lassen, als würd sich der spieler bewegen und nicht die Map.
 
 == Lösungsweg
-- Kamera View: zuerst war der Gedankengang, dass wen auf der Map die sachen sich bewegen dann wird es schon besser aussehen. aber der ansatz der auch im Inspirations Processing Game gebraucht wurde: Die kamere scrollte versetzt zum player. also mit leichtem delay zur bewegung des Spielers
+- Kamera View: zuerst war der Gedankengang, dass wen auf der Map die sachen sich bewegen dann wird es schon besser aussehen. aber der ansatz der auch im Inspirations Processing Game gebraucht wurde: Die kamere scrollte versetzt zum player. also mit leichtem delay zur bewegung des Spielers. Das habe ich mithilfe KI gelöst. unzwar nimmt man ein Target X nach jedem jump und pro frame kommt man immer näher ans target
 
 == Endresultat
 

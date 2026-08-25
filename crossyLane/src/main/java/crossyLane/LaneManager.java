@@ -63,8 +63,6 @@ public class LaneManager {
                 logs.put(upperLane, createLogs(Constants.LOG_SPEED));
                 logs.put(lowerLane, createLogs(-Constants.LOG_SPEED));
             }
-            default -> {
-            }
         }
     }
 
