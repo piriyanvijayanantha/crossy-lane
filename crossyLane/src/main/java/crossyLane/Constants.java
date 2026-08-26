@@ -3,7 +3,7 @@ package crossyLane;
 public class Constants {
     //Playground
     static final int WIDTH = 600;
-    static final int HEIGHT = 800;
+    static final int HEIGHT = 1000;
     static final int LANE_COUNT = 10;
     static final float LANE_HEIGHT = (float) HEIGHT / LANE_COUNT;
     static final int CAMERA_LOCK_ROW = 4; //kamera mitte
@@ -12,6 +12,9 @@ public class Constants {
     //Images & Player
     static final float SPRITE_SCALE = (float) (70.0 / 128);
     static final float MOVE_SPEED = 4;
+
+    //Anteil der Fläche der wirklich hittet
+    static final float HITBOX_FACTOR = 0.8f;
 
     //Cars
     static final float CAR_SCALE = (float) (80.0 / 369);

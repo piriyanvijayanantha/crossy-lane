@@ -31,9 +31,13 @@ Schritt 9: Animationen und Sounds, jump animations...
 
 == Schwierigkeiten
 - Kamera View: da musste man zuerst schauen, wie man die kamera überhaupt will im sinn von was soll im zentrum stehen. eine Schwierigkeit war es den spieler zwar im zentrum zu stellen, aber es immernoch so auszusehen lassen, als würd sich der spieler bewegen und nicht die Map.
+- Hitbox: Es gab mehrere Optionen Wie man die Hitbox checkt und wo verglichen werden soll
+- BoundingBox: Ich wusste nicht wie ich die genaue Bounding Box Berechenen kann.
 
 == Lösungsweg
 - Kamera View: zuerst war der Gedankengang, dass wen auf der Map die sachen sich bewegen dann wird es schon besser aussehen. aber der ansatz der auch im Inspirations Processing Game gebraucht wurde: Die kamere scrollte versetzt zum player. also mit leichtem delay zur bewegung des Spielers. Das habe ich mithilfe KI gelöst. unzwar nimmt man ein Target X nach jedem jump und pro frame kommt man immer näher ans target
+- Hitbox: Ich habe in der App Klasse es implementiert und nur die x achse in betracht gezogen und die Lane/Spur statt y achse. da man nur auf spuren jumpen kann. Auch habe ich die methode für beide (logs und car) ausgelagert so dass für beide die Methode brauchen kann.
+- Die Ki hat mir im FileLoader die Berechenung gemacht.
 
 == Endresultat
 

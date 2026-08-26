@@ -7,6 +7,7 @@ public class CrossyLaneApp extends PApplet {
     private LaneManager laneManager;
     private boolean leftPressed;
     private boolean rightPressed;
+    private boolean gameOver;
 
     @Override
     public void settings(){
@@ -16,20 +17,86 @@ public class CrossyLaneApp extends PApplet {
     @Override
     public void setup(){
         imageMode(CENTER);
+        startNewGame();
+    }
+
+    private void startNewGame(){
         player = new Player(this);
         laneManager = new LaneManager(this);
+        leftPressed = false;
+        rightPressed = false;
+        gameOver = false;
     }
 
     @Override
     public void draw(){
-        //calculate
-        if (leftPressed) player.moveLeft();
-        if (rightPressed) player.moveRight();
-        player.updateCamera();
+        //calculate, bei Game Over eingefroren
+        if (!gameOver) {
+            if (leftPressed) player.moveLeft();
+            if (rightPressed) player.moveRight();
+            player.updateCamera();
+            updateWorld();
+            checkCollisions();
+        }
         //World
         drawLanes();
         //player komplett im Vordergrund immer
         player.display();
+
+        if (gameOver) {
+            drawGameOver();
+        }
+    }
+
+    // Bewegt Autos und Logs
+    private void updateWorld(){
+        float cameraOffset = player.getCameraOffset();
+        int firstLane = firstVisibleLane(cameraOffset);
+
+        for (int laneIndex = firstLane; laneIndex <= firstLane + Constants.LANE_COUNT; laneIndex++) {
+            for (Car car : laneManager.getCars(laneIndex)) {
+                car.update();
+            }
+            for (Log log : laneManager.getLogs(laneIndex)) {
+                log.update();
+            }
+        }
+    }
+
+    private void checkCollisions(){
+        int lane = player.getLaneIndex();
+
+        for (Car car : laneManager.getCars(lane)) {
+            if (overlapsPlayer(car)) {
+                gameOver = true;
+                return;
+            }
+        }
+
+        for (Log log : laneManager.getLogs(lane)) {
+            if (overlapsPlayer(log)) {
+                player.carry(log.getSpeed());
+                return;
+            }
+        }
+    }
+
+    private boolean overlapsPlayer(MovingSprite sprite){
+        return player.getHitRight() > sprite.getHitLeft()
+                && player.getHitLeft() < sprite.getHitRight();
+    }
+
+    private void drawGameOver(){
+        noStroke();
+        fill(0, 150);
+        rect(0, 0, Constants.WIDTH, Constants.HEIGHT);
+
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(56);
+        text("GAME OVER", Constants.WIDTH / 2f, Constants.HEIGHT / 2f - 30);
+        textSize(22);
+        text("SPACE = neu starten", Constants.WIDTH / 2f, Constants.HEIGHT / 2f + 40);
     }
 
     private void drawLanes(){
@@ -85,11 +152,9 @@ public class CrossyLaneApp extends PApplet {
             }
 
             for (Car car : laneManager.getCars(laneIndex)) {
-                car.update();
                 car.display(centerY);
             }
             for (Log log : laneManager.getLogs(laneIndex)) {
-                log.update();
                 log.display(centerY);
             }
         }
@@ -109,6 +174,13 @@ public class CrossyLaneApp extends PApplet {
 
     @Override
     public void keyPressed(){
+        if (gameOver) {
+            if (key == ' ') {
+                startNewGame();
+            }
+            return;
+        }
+
         if (key == CODED) {
             switch (keyCode) {
                 case LEFT -> leftPressed = true;

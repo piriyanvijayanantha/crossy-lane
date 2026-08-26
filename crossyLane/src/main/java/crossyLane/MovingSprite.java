@@ -10,6 +10,8 @@ public abstract class MovingSprite {
     protected final float h;
     protected final float speed;
 
+    protected final float hitW;
+
     protected float x;
 
     protected MovingSprite(PApplet pApplet, PImage image, float scale, float startX, float speed) {
@@ -19,6 +21,19 @@ public abstract class MovingSprite {
         this.h = image.height * scale;
         this.x = startX;
         this.speed = speed;
+        this.hitW = w * FileLoader.getVisibleWidthFraction(image) * Constants.HITBOX_FACTOR;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public float getHitLeft() {
+        return x - hitW / 2;
+    }
+
+    public float getHitRight() {
+        return x + hitW / 2;
     }
 
     public void update() {

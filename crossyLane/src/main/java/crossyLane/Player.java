@@ -11,6 +11,8 @@ public class Player {
     private final float w;
     private final float h;
 
+    private final float hitW;
+
     private float x;
     private int laneIndex;
     private float displayedCameraOffset;
@@ -20,6 +22,7 @@ public class Player {
         image = getImage(pApplet, "player.png");
         w = image.width * Constants.SPRITE_SCALE;
         h = image.height * Constants.SPRITE_SCALE;
+        hitW = w * FileLoader.getVisibleWidthFraction(image) * Constants.HITBOX_FACTOR;
 
         x = (float) Constants.WIDTH / 2;
         laneIndex = 0;
@@ -28,6 +31,14 @@ public class Player {
 
     public int getLaneIndex() {
         return laneIndex;
+    }
+
+    public float getHitLeft() {
+        return x - hitW / 2;
+    }
+
+    public float getHitRight() {
+        return x + hitW / 2;
     }
 
     // Ziel wo die Kamera hin soll, springt immer um einen wert
@@ -56,6 +67,11 @@ public class Player {
 
     public void moveRight() {
         x = Math.min(Constants.WIDTH - w / 2, x + Constants.MOVE_SPEED);
+    }
+
+    // Der Spieler steht auf einem Log und uebernimmt dessen Tempo und Richtung.
+    public void carry(float logSpeed) {
+        x = Math.min(Constants.WIDTH - w / 2, Math.max(w / 2, x + logSpeed));
     }
 
     public void jumpUp() {
