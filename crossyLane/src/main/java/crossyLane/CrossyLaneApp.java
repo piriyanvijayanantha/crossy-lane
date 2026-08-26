@@ -79,6 +79,11 @@ public class CrossyLaneApp extends PApplet {
                 return;
             }
         }
+
+
+        if (laneManager.getType(lane) == LaneType.RIVER) {
+            gameOver = true;
+        }
     }
 
     private boolean overlapsPlayer(MovingSprite sprite){
