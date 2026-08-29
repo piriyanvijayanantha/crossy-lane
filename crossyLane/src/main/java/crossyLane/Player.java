@@ -15,6 +15,7 @@ public class Player {
 
     private float x;
     private int laneIndex;
+    private int maxLaneReached;
     private float displayedCameraOffset;
 
     public Player(PApplet pApplet) {
@@ -26,11 +27,17 @@ public class Player {
 
         x = (float) Constants.WIDTH / 2;
         laneIndex = 0;
+        maxLaneReached = 0;
         displayedCameraOffset = 0;
     }
 
     public int getLaneIndex() {
         return laneIndex;
+    }
+
+    // Score = weiteste erreichte Lane. Zurueckspringen senkt ihn nicht.
+    public int getScore() {
+        return maxLaneReached;
     }
 
     public float getHitLeft() {
@@ -76,6 +83,7 @@ public class Player {
 
     public void jumpUp() {
         laneIndex++;
+        maxLaneReached = Math.max(maxLaneReached, laneIndex);
     }
 
     public void jumpDown() {

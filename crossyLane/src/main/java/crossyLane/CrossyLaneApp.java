@@ -43,8 +43,11 @@ public class CrossyLaneApp extends PApplet {
         //player komplett im Vordergrund immer
         player.display();
 
+        //HUD immer zuoberst
         if (gameOver) {
             drawGameOver();
+        } else {
+            drawScore();
         }
     }
 
@@ -91,17 +94,35 @@ public class CrossyLaneApp extends PApplet {
                 && player.getHitLeft() < sprite.getHitRight();
     }
 
+    // Score oben links waehrend dem Spielen.
+    private void drawScore(){
+        textAlign(LEFT, TOP);
+        textSize(30);
+
+        String label = "Score: " + player.getScore();
+        // Dunkler Versatz dahinter, damit die Zahl auf jedem Lane-Typ lesbar bleibt.
+        fill(0, 130);
+        text(label, Constants.SCORE_MARGIN + 2, Constants.SCORE_MARGIN + 2);
+        fill(255);
+        text(label, Constants.SCORE_MARGIN, Constants.SCORE_MARGIN);
+    }
+
     private void drawGameOver(){
         noStroke();
         fill(0, 150);
         rect(0, 0, Constants.WIDTH, Constants.HEIGHT);
 
+        float centerX = Constants.WIDTH / 2f;
+        float centerY = Constants.HEIGHT / 2f;
+
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(56);
-        text("GAME OVER", Constants.WIDTH / 2f, Constants.HEIGHT / 2f - 30);
+        text("GAME OVER", centerX, centerY - 70);
+        textSize(36);
+        text("Score: " + player.getScore(), centerX, centerY);
         textSize(22);
-        text("SPACE = neu starten", Constants.WIDTH / 2f, Constants.HEIGHT / 2f + 40);
+        text("SPACE = neu starten", centerX, centerY + 70);
     }
 
     private void drawLanes(){

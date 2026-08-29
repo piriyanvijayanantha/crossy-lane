@@ -38,6 +38,9 @@ public class Constants {
     static final float ROAD_DASH_GAP = 20;
     static final float ROAD_DASH_WEIGHT = 3;
 
+    //HUD
+    static final float SCORE_MARGIN = 18;
+
     //Lawn
     static final int LAWN_R = 64;
     static final int LAWN_G = 148;
