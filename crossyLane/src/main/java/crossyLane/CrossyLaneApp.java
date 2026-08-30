@@ -7,7 +7,13 @@ public class CrossyLaneApp extends PApplet {
     private LaneManager laneManager;
     private boolean leftPressed;
     private boolean rightPressed;
-    private boolean gameOver;
+
+    private GameState state;
+    private int highScore;
+
+    private Button playButton;
+    private Button playAgainButton;
+    private Button exitButton;
 
     @Override
     public void settings(){
@@ -17,21 +23,44 @@ public class CrossyLaneApp extends PApplet {
     @Override
     public void setup(){
         imageMode(CENTER);
-        startNewGame();
+        createButtons();
+        resetWorld();
+        state = GameState.START;
     }
 
-    private void startNewGame(){
+    private void createButtons(){
+        float centerX = Constants.WIDTH / 2f;
+        float centerY = Constants.HEIGHT / 2f;
+
+        // Play und PlayAgain liegen an derselben Stelle, es ist immer nur einer sichtbar.
+        playButton = new Button(this, "PLAY", centerX, centerY - 10);
+        playAgainButton = new Button(this, "PLAY AGAIN", centerX, centerY - 10);
+        exitButton = new Button(this, "EXIT", centerX, centerY + 70);
+    }
+
+    // Baut eine frische Welt. Laeuft auch vor dem Startscreen, damit dort
+    // schon etwas im Hintergrund steht statt einer leeren Flaeche.
+    private void resetWorld(){
         player = new Player(this);
         laneManager = new LaneManager(this);
         leftPressed = false;
         rightPressed = false;
-        gameOver = false;
+    }
+
+    private void startNewGame(){
+        resetWorld();
+        state = GameState.PLAYING;
+    }
+
+    private void endGame(){
+        state = GameState.GAME_OVER;
+        highScore = Math.max(highScore, player.getScore());
     }
 
     @Override
     public void draw(){
-        //calculate, bei Game Over eingefroren
-        if (!gameOver) {
+        //calculate, laeuft nur im Spiel selbst
+        if (state == GameState.PLAYING) {
             if (leftPressed) player.moveLeft();
             if (rightPressed) player.moveRight();
             player.updateCamera();
@@ -44,10 +73,10 @@ public class CrossyLaneApp extends PApplet {
         player.display();
 
         //HUD immer zuoberst
-        if (gameOver) {
-            drawGameOver();
-        } else {
-            drawScore();
+        switch (state) {
+            case START -> drawStartScreen();
+            case PLAYING -> drawScore();
+            case GAME_OVER -> drawGameOver();
         }
     }
 
@@ -57,8 +86,8 @@ public class CrossyLaneApp extends PApplet {
         int firstLane = firstVisibleLane(cameraOffset);
 
         for (int laneIndex = firstLane; laneIndex <= firstLane + Constants.LANE_COUNT; laneIndex++) {
-            for (Car car : laneManager.getCars(laneIndex)) {
-                car.update();
+            for (Vehicle vehicle : laneManager.getVehicles(laneIndex)) {
+                vehicle.update();
             }
             for (Log log : laneManager.getLogs(laneIndex)) {
                 log.update();
@@ -69,9 +98,9 @@ public class CrossyLaneApp extends PApplet {
     private void checkCollisions(){
         int lane = player.getLaneIndex();
 
-        for (Car car : laneManager.getCars(lane)) {
-            if (overlapsPlayer(car)) {
-                gameOver = true;
+        for (Vehicle vehicle : laneManager.getVehicles(lane)) {
+            if (overlapsPlayer(vehicle)) {
+                endGame();
                 return;
             }
         }
@@ -85,7 +114,7 @@ public class CrossyLaneApp extends PApplet {
 
 
         if (laneManager.getType(lane) == LaneType.RIVER) {
-            gameOver = true;
+            endGame();
         }
     }
 
@@ -107,10 +136,40 @@ public class CrossyLaneApp extends PApplet {
         text(label, Constants.SCORE_MARGIN, Constants.SCORE_MARGIN);
     }
 
-    private void drawGameOver(){
+    // Abdunkeln, damit die Welt dahinter sichtbar bleibt aber nicht ablenkt.
+    private void drawDimOverlay(){
         noStroke();
         fill(0, 150);
         rect(0, 0, Constants.WIDTH, Constants.HEIGHT);
+    }
+
+    private void drawStartScreen(){
+        drawDimOverlay();
+
+        float centerX = Constants.WIDTH / 2f;
+        float centerY = Constants.HEIGHT / 2f;
+
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(58);
+        text("CROSSY LANE", centerX, centerY - 180);
+
+        if (highScore > 0) {
+            textSize(26);
+            text("Best: " + highScore, centerX, centerY - 100);
+        }
+
+        playButton.display();
+        exitButton.display();
+
+        fill(220);
+        textAlign(CENTER, CENTER);
+        textSize(20);
+        text("SPACE = starten     Pfeiltasten = bewegen", centerX, centerY + 160);
+    }
+
+    private void drawGameOver(){
+        drawDimOverlay();
 
         float centerX = Constants.WIDTH / 2f;
         float centerY = Constants.HEIGHT / 2f;
@@ -118,11 +177,19 @@ public class CrossyLaneApp extends PApplet {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(56);
-        text("GAME OVER", centerX, centerY - 70);
-        textSize(36);
-        text("Score: " + player.getScore(), centerX, centerY);
-        textSize(22);
-        text("SPACE = neu starten", centerX, centerY + 70);
+        text("GAME OVER", centerX, centerY - 200);
+        textSize(38);
+        text("Score: " + player.getScore(), centerX, centerY - 125);
+        textSize(26);
+        text("Best: " + highScore, centerX, centerY - 75);
+
+        playAgainButton.display();
+        exitButton.display();
+
+        fill(220);
+        textAlign(CENTER, CENTER);
+        textSize(20);
+        text("SPACE = nochmal", centerX, centerY + 160);
     }
 
     private void drawLanes(){
@@ -177,8 +244,11 @@ public class CrossyLaneApp extends PApplet {
                 drawRoadMarking(topY);
             }
 
-            for (Car car : laneManager.getCars(laneIndex)) {
-                car.display(centerY);
+            for (Decoration decoration : laneManager.getDecorations(laneIndex)) {
+                decoration.display(centerY);
+            }
+            for (Vehicle vehicle : laneManager.getVehicles(laneIndex)) {
+                vehicle.display(centerY);
             }
             for (Log log : laneManager.getLogs(laneIndex)) {
                 log.display(centerY);
@@ -199,8 +269,22 @@ public class CrossyLaneApp extends PApplet {
     }
 
     @Override
+    public void mousePressed(){
+        if (state == GameState.PLAYING) {
+            return;
+        }
+
+        Button startButton = (state == GameState.START) ? playButton : playAgainButton;
+        if (startButton.contains(mouseX, mouseY)) {
+            startNewGame();
+        } else if (exitButton.contains(mouseX, mouseY)) {
+            exit();
+        }
+    }
+
+    @Override
     public void keyPressed(){
-        if (gameOver) {
+        if (state != GameState.PLAYING) {
             if (key == ' ') {
                 startNewGame();
             }

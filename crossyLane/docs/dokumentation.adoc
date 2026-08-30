@@ -14,7 +14,7 @@ Schritt 1: Initialisierung des Grundgerüsts mit 5 Lanes (evtl später mehr spur
 
 Schritt 2: unlimitierte Lanes. Mit 5 Lanes im Screen aber per runtime immer wieder neu bauende Lanes so dass man unendlich nach oben gehen kann.
 
-Schritt 3: Bewegende hindernisse auf den Lanes platzieren mit horizonatler geschwindigkeit
+Schritt 3: Bewegende hindernisse auf den Lanes platzieren mit horizontaler geschwindigkeit
 
 Schritt 4: HitBox erkennen. Eine kollision zwischen player und hinderniss führt zu gameOver. den GameOver screen müsste man auch erstellen.
 
@@ -26,7 +26,9 @@ Schritt 7: Startscreen mit Score anzeige und play again
 
 Schritt 8: Levels mir Random Logs und Cars und geschwindigkeit
 
-Schritt 9: Animationen und Sounds, jump animations...
+Schritt 9: Grafiken verbessern. schönere Bilder.
+
+Schritt 10: Animationen und Sounds, jump animations...
 
 
 == Schwierigkeiten

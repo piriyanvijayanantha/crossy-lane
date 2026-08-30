@@ -52,6 +52,10 @@ public class FileLoader {
         return visibleFraction(image)[1];
     }
 
+    public static float scaleForVisibleHeight(PImage image, float targetVisibleHeight) {
+        return targetVisibleHeight / (image.height * getVisibleHeightFraction(image));
+    }
+
     private static float[] visibleFraction(PImage image) {
         return visibleFractionCache.computeIfAbsent(image, FileLoader::computeVisibleFraction);
     }

@@ -16,14 +16,29 @@ public class Constants {
     //Anteil der Fläche der wirklich hittet
     static final float HITBOX_FACTOR = 0.8f;
 
-    //Cars
-    static final float CAR_SCALE = (float) (80.0 / 369);
+    //Vehicles
+    // Zielhoehe des SICHTBAREN Fahrzeugs auf dem Bildschirm, nicht der Bilddatei.
+    static final float CAR_VISIBLE_HEIGHT = 38;
+    static final float TRUCK_VISIBLE_HEIGHT = 50;
+    static final float MOTORBIKE_VISIBLE_HEIGHT = 28;
     static final float CAR_SPEED = 3;
+    static final int CARS_PER_LANE_LEVEL_1 = 2;
 
     //Logs
     static final float LOG_SCALE = (float) (60.0 / 369);
     static final float LOG_SPEED = 2;
-    static final int LOGS_PER_LANE = 4;
+    static final int LOGS_PER_LANE_LEVEL_1 = 4;
+
+    //Levels
+    static final int LEVEL_2_BLOCK = 10;
+    static final int LEVEL_3_BLOCK = 22;
+    static final float CAR_SPEED_RAMP = 0.03f;
+    static final float CAR_SPEED_MAX_FACTOR = 2.0f;
+    static final float LOG_SPEED_RAMP = 0.02f;
+    static final float LOG_SPEED_MAX_FACTOR = 1.6f;
+    // Jede Spur bekommt ihr eigenes Tempo in dieser Bandbreite.
+    static final float SPEED_VARIATION_MIN = 0.92f;
+    static final float SPEED_VARIATION_MAX = 1.08f;
 
     //River
     static final int RIVER_R = 64;
@@ -40,6 +55,29 @@ public class Constants {
 
     //HUD
     static final float SCORE_MARGIN = 18;
+
+    //Buttons
+    static final float BUTTON_WIDTH = 240;
+    static final float BUTTON_HEIGHT = 62;
+    static final float BUTTON_RADIUS = 10;
+    static final float BUTTON_TEXT_SIZE = 26;
+    static final int BUTTON_R = 64;
+    static final int BUTTON_G = 148;
+    static final int BUTTON_B = 21;
+    static final int BUTTON_HOVER_R = 96;
+    static final int BUTTON_HOVER_G = 196;
+    static final int BUTTON_HOVER_B = 44;
+
+    //Decorations
+    static final float TREE_VISIBLE_HEIGHT = 72;
+    static final float BUSH_VISIBLE_HEIGHT = 40;
+    static final float ROCK_VISIBLE_HEIGHT = 26;
+    static final float FLOWERS_VISIBLE_HEIGHT = 20;
+    static final int DECORATIONS_MIN = 2;
+    static final int DECORATIONS_MAX = 5;
+    // Wie weit eine Deko aus ihrem Slot wandern darf (Anteil der Slotbreite).
+    static final float DECORATION_JITTER = 0.35f;
+    static final int SHADOW_ALPHA = 55;
 
     //Lawn
     static final int LAWN_R = 64;
