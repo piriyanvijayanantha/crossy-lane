@@ -54,7 +54,6 @@ public class Player {
         return laneIndex;
     }
 
-    // Score = weiteste erreichte Lane. Zurueckspringen senkt ihn nicht.
     public int getScore() {
         return maxLaneReached;
     }
@@ -84,8 +83,6 @@ public class Player {
         }
 
         rideOffsetY += (rideTargetY - rideOffsetY) * Constants.RIDE_SMOOTH_FACTOR;
-        // Zuruecksetzen: steht er weiter auf einem Log, setzt carry() den Wert
-        // gleich wieder. Tut es das nicht, sinkt er von selbst zurueck.
         rideTargetY = 0;
     }
 

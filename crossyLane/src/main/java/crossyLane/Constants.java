@@ -69,6 +69,9 @@ public class Constants {
     static final int HIGHSCORE_COUNT = 5;
     static final int NAME_MAX_LENGTH = 12;
 
+    //Tutorial
+    static final float TUTORIAL_MARGIN = 62;
+
     //HUD
     static final float SCORE_MARGIN = 18;
 

@@ -52,10 +52,24 @@ Schritt 12: Tutorial im Spiel einbauen
 - Spieler auf log: um halbe Spielerhöh plus halbe Stammhöhe anheben, minus 8 px damit die Füsse leicht einsinken. Wichtig war die Stammhöh zu nehmen weil die drei Log unterschiedlich dick sind.
 
 == Endresultat
+Startscreen:
 
-TODO: Was steht am Ende? Screenshots, Funktionsumfang, ggf. Link/Anleitung zum Starten.
+image::Startscreen.png[]
+
+GameScreen:
+
+image::GameScreen.png[]
+
+GameOver:
+
+image::gameOverScreen.png[]
+
+Tutorial Screen:
+
+image::TutorialScreen.png[]
 
 == Lernerfolge / Reflexion
  - Direkt am Anfang lernte ich wie man das Projekt korekt aufsetzt. Wie man mit modulen umgeht und wie man ein Modul aus einem anderen Repo rüberkopiert ins eigene und es dann auch zum funktionieren zu bringen. ich brauchte 2 anläufe mit der Projekaufsetzung. auch waren paar depricated Sachen im pom.xml die ich angepasst habe.
 
 - Ich hatte am Anfang keine Ahnung wie ich beginnen möchte, und habe mir deshalb mit Claude AI einen Plan überlegt wie ich es machen will. zusammen haben wir dann einen Schritt für Schritt plan entwickelt für eine erste Version, die ich in der doku als vorgehen schonmal dokumentiert habe.
+

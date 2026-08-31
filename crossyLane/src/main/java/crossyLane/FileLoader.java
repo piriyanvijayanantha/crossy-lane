@@ -87,7 +87,6 @@ public class FileLoader {
             }
         }
 
-        // Bild ohne sichtbare Pixel: auf volle Groesse zurueckfallen.
         if (maxX < 0) {
             return new float[]{1f, 1f, 0f, 0f};
         }
