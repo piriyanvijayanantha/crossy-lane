@@ -11,6 +11,7 @@ public abstract class MovingSprite {
     protected final float speed;
 
     protected final float hitW;
+    protected final float visibleH;
 
     protected float x;
 
@@ -22,10 +23,15 @@ public abstract class MovingSprite {
         this.x = startX;
         this.speed = speed;
         this.hitW = w * FileLoader.getVisibleWidthFraction(image) * Constants.HITBOX_FACTOR;
+        this.visibleH = h * FileLoader.getVisibleHeightFraction(image);
     }
 
     public float getSpeed() {
         return speed;
+    }
+
+    public float getVisibleHeight() {
+        return visibleH;
     }
 
     public float getHitLeft() {

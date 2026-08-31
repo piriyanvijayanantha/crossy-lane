@@ -3,10 +3,6 @@ package crossyLane;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-/**
- * Hindernis auf der Strasse: Auto, Truck oder Motorrad.
- * Beruehrung fuehrt zu Game Over.
- */
 public class Vehicle extends MovingSprite {
 
     public Vehicle(PApplet pApplet, PImage image, VehicleType type, float startX, float speed) {

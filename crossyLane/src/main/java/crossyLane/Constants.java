@@ -10,8 +10,19 @@ public class Constants {
     static final float CAMERA_SMOOTH_FACTOR = 0.05f;
 
     //Images & Player
-    static final float SPRITE_SCALE = (float) (70.0 / 128);
+    static final float PLAYER_VISIBLE_HEIGHT = 58;
     static final float MOVE_SPEED = 4;
+
+    //Sprung-Animation
+    static final int JUMP_FRAMES = 12;
+    static final float JUMP_STRETCH = 0.20f;
+    static final float JUMP_SQUEEZE = 0.14f;
+    static final float JUMP_HOP_HEIGHT = 16;
+
+    //Stehen auf dem Log: wie tief die Fuesse in die Stammoberseite einsinken
+    //duerfen, und wie weich der Uebergang beim Auf- und Abspringen laeuft.
+    static final float RIDE_OVERLAP = 8;
+    static final float RIDE_SMOOTH_FACTOR = 0.25f;
 
     //Anteil der Fläche der wirklich hittet
     static final float HITBOX_FACTOR = 0.8f;

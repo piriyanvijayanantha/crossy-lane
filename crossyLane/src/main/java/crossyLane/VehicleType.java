@@ -1,13 +1,5 @@
 package crossyLane;
 
-/**
- * Die drei Fahrzeugarten. Jede bringt ihre Bilder und ihre Zielgroesse mit.
- *
- * Bewusst KEIN eigenes Tempo: in einer Spur mischen sich alle drei Typen, und
- * unterschiedlich schnelle Fahrzeuge wuerden sich gegenseitig einholen und
- * durcheinander hindurchfahren. Der Unterschied liegt in der Groesse - ein
- * Truck ist fast doppelt so breit wie ein Motorrad und damit schwerer zu umgehen.
- */
 public enum VehicleType {
     CAR("CarBlueRightDriving.png", "CarRedLeftDriving.png",
             Constants.CAR_VISIBLE_HEIGHT),
@@ -15,8 +7,6 @@ public enum VehicleType {
     TRUCK("TruckRightDriving.png", "TruckLeftDriving.png",
             Constants.TRUCK_VISIBLE_HEIGHT),
 
-    // Achtung: die Dateinamen sind uneinheitlich geschrieben
-    // (grosses B rechts, kleines b links). Exakt so muessen sie stehen.
     MOTORBIKE("MotorBikeRightDriving.png", "MotorbikeLeftDriving.png",
             Constants.MOTORBIKE_VISIBLE_HEIGHT);
 

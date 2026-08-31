@@ -2,10 +2,6 @@ package crossyLane;
 
 import processing.core.PApplet;
 
-/**
- * Anklickbarer Button. Merkt sich seine Mitte, damit er wie die Sprites
- * über den Mittelpunkt positioniert wird.
- */
 public class Button {
     private final PApplet pApplet;
     private final String label;

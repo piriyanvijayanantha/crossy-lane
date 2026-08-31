@@ -47,9 +47,16 @@ public class FileLoader {
         return visibleFraction(image)[0];
     }
 
-    /** Hoehe des sichtbaren Bildinhalts als Anteil der Bildhoehe (0..1). */
     public static float getVisibleHeightFraction(PImage image) {
         return visibleFraction(image)[1];
+    }
+
+    public static float getVisibleOffsetXFraction(PImage image) {
+        return visibleFraction(image)[2];
+    }
+
+    public static float getVisibleOffsetYFraction(PImage image) {
+        return visibleFraction(image)[3];
     }
 
     public static float scaleForVisibleHeight(PImage image, float targetVisibleHeight) {
@@ -82,12 +89,14 @@ public class FileLoader {
 
         // Bild ohne sichtbare Pixel: auf volle Groesse zurueckfallen.
         if (maxX < 0) {
-            return new float[]{1f, 1f};
+            return new float[]{1f, 1f, 0f, 0f};
         }
 
         return new float[]{
                 (maxX - minX + 1) / (float) image.width,
-                (maxY - minY + 1) / (float) image.height
+                (maxY - minY + 1) / (float) image.height,
+                ((minX + maxX) / 2f - image.width / 2f) / image.width,
+                ((minY + maxY) / 2f - image.height / 2f) / image.height
         };
     }
 }

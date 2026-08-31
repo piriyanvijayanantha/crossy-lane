@@ -16,19 +16,19 @@ public class CrossyLaneApp extends PApplet {
     private Button exitButton;
 
     @Override
-    public void settings(){
+    public void settings() {
         size(Constants.WIDTH, Constants.HEIGHT);
     }
 
     @Override
-    public void setup(){
+    public void setup() {
         imageMode(CENTER);
         createButtons();
         resetWorld();
         state = GameState.START;
     }
 
-    private void createButtons(){
+    private void createButtons() {
         float centerX = Constants.WIDTH / 2f;
         float centerY = Constants.HEIGHT / 2f;
 
@@ -40,30 +40,34 @@ public class CrossyLaneApp extends PApplet {
 
     // Baut eine frische Welt. Laeuft auch vor dem Startscreen, damit dort
     // schon etwas im Hintergrund steht statt einer leeren Flaeche.
-    private void resetWorld(){
+    private void resetWorld() {
         player = new Player(this);
         laneManager = new LaneManager(this);
         leftPressed = false;
         rightPressed = false;
     }
 
-    private void startNewGame(){
+    private void startNewGame() {
         resetWorld();
         state = GameState.PLAYING;
     }
 
-    private void endGame(){
+    private void endGame() {
         state = GameState.GAME_OVER;
         highScore = Math.max(highScore, player.getScore());
     }
 
     @Override
-    public void draw(){
-        //calculate, laeuft nur im Spiel selbst
+    public void draw() {
+        // 60 frames pro sekunde -> Default
         if (state == GameState.PLAYING) {
-            if (leftPressed) player.moveLeft();
-            if (rightPressed) player.moveRight();
-            player.updateCamera();
+            if (leftPressed) {
+                player.moveLeft();
+            }
+            if (rightPressed) {
+                player.moveRight();
+            }
+            player.update();
             updateWorld();
             checkCollisions();
         }
@@ -81,7 +85,7 @@ public class CrossyLaneApp extends PApplet {
     }
 
     // Bewegt Autos und Logs
-    private void updateWorld(){
+    private void updateWorld() {
         float cameraOffset = player.getCameraOffset();
         int firstLane = firstVisibleLane(cameraOffset);
 
@@ -95,7 +99,7 @@ public class CrossyLaneApp extends PApplet {
         }
     }
 
-    private void checkCollisions(){
+    private void checkCollisions() {
         int lane = player.getLaneIndex();
 
         for (Vehicle vehicle : laneManager.getVehicles(lane)) {
@@ -107,7 +111,7 @@ public class CrossyLaneApp extends PApplet {
 
         for (Log log : laneManager.getLogs(lane)) {
             if (overlapsPlayer(log)) {
-                player.carry(log.getSpeed());
+                player.carry(log.getSpeed(), log.getVisibleHeight());
                 return;
             }
         }
@@ -118,13 +122,12 @@ public class CrossyLaneApp extends PApplet {
         }
     }
 
-    private boolean overlapsPlayer(MovingSprite sprite){
+    private boolean overlapsPlayer(MovingSprite sprite) {
         return player.getHitRight() > sprite.getHitLeft()
                 && player.getHitLeft() < sprite.getHitRight();
     }
 
-    // Score oben links waehrend dem Spielen.
-    private void drawScore(){
+    private void drawScore() {
         textAlign(LEFT, TOP);
         textSize(30);
 
@@ -136,14 +139,13 @@ public class CrossyLaneApp extends PApplet {
         text(label, Constants.SCORE_MARGIN, Constants.SCORE_MARGIN);
     }
 
-    // Abdunkeln, damit die Welt dahinter sichtbar bleibt aber nicht ablenkt.
-    private void drawDimOverlay(){
+    private void drawDimOverlay() {
         noStroke();
         fill(0, 150);
         rect(0, 0, Constants.WIDTH, Constants.HEIGHT);
     }
 
-    private void drawStartScreen(){
+    private void drawStartScreen() {
         drawDimOverlay();
 
         float centerX = Constants.WIDTH / 2f;
@@ -168,7 +170,7 @@ public class CrossyLaneApp extends PApplet {
         text("SPACE = starten     Pfeiltasten = bewegen", centerX, centerY + 160);
     }
 
-    private void drawGameOver(){
+    private void drawGameOver() {
         drawDimOverlay();
 
         float centerX = Constants.WIDTH / 2f;
@@ -192,7 +194,7 @@ public class CrossyLaneApp extends PApplet {
         text("SPACE = nochmal", centerX, centerY + 160);
     }
 
-    private void drawLanes(){
+    private void drawLanes() {
         float cameraOffset = player.getCameraOffset();
 
         drawLaneBackgrounds(cameraOffset);
@@ -200,17 +202,17 @@ public class CrossyLaneApp extends PApplet {
     }
 
     // Bildschirm-Y der Lane-Mitte. cameraOffset ist gebrochen, dadurch scrollt die Welt weich.
-    private float laneCenterY(int laneIndex, float cameraOffset){
+    private float laneCenterY(int laneIndex, float cameraOffset) {
         return Constants.HEIGHT - (laneIndex - cameraOffset + 0.5f) * Constants.LANE_HEIGHT;
     }
 
     // Unterste sichtbare Lane. Eine Lane mehr zeichnen, weil bei gebrochenem Offset
     // oben und unten je eine Lane nur halb im Bild liegt.
-    private int firstVisibleLane(float cameraOffset){
+    private int firstVisibleLane(float cameraOffset) {
         return Math.max(0, (int) Math.floor(cameraOffset));
     }
 
-    private void drawLaneBackgrounds(float cameraOffset){
+    private void drawLaneBackgrounds(float cameraOffset) {
         noStroke();
 
         int firstLane = firstVisibleLane(cameraOffset);
@@ -230,7 +232,7 @@ public class CrossyLaneApp extends PApplet {
         }
     }
 
-    private void drawLaneContents(float cameraOffset){
+    private void drawLaneContents(float cameraOffset) {
         textAlign(CENTER, CENTER);
         textSize(20);
 
@@ -256,7 +258,7 @@ public class CrossyLaneApp extends PApplet {
         }
     }
 
-    private void drawRoadMarking(float y){
+    private void drawRoadMarking(float y) {
         stroke(255);
         strokeWeight(Constants.ROAD_DASH_WEIGHT);
 
@@ -269,7 +271,7 @@ public class CrossyLaneApp extends PApplet {
     }
 
     @Override
-    public void mousePressed(){
+    public void mousePressed() {
         if (state == GameState.PLAYING) {
             return;
         }
@@ -283,7 +285,7 @@ public class CrossyLaneApp extends PApplet {
     }
 
     @Override
-    public void keyPressed(){
+    public void keyPressed() {
         if (state != GameState.PLAYING) {
             if (key == ' ') {
                 startNewGame();
@@ -302,7 +304,7 @@ public class CrossyLaneApp extends PApplet {
     }
 
     @Override
-    public void keyReleased(){
+    public void keyReleased() {
         if (key == CODED) {
             switch (keyCode) {
                 case LEFT -> leftPressed = false;
