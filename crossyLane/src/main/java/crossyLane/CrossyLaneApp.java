@@ -9,7 +9,8 @@ public class CrossyLaneApp extends PApplet {
     private boolean rightPressed;
 
     private GameState state;
-    private int highScore;
+    private HighscoreStore highscores;
+    private String playerName = "";
 
     private Button playButton;
     private Button playAgainButton;
@@ -24,6 +25,7 @@ public class CrossyLaneApp extends PApplet {
     public void setup() {
         imageMode(CENTER);
         createButtons();
+        highscores = new HighscoreStore(this);
         resetWorld();
         state = GameState.START;
     }
@@ -33,9 +35,9 @@ public class CrossyLaneApp extends PApplet {
         float centerY = Constants.HEIGHT / 2f;
 
         // Play und PlayAgain liegen an derselben Stelle, es ist immer nur einer sichtbar.
-        playButton = new Button(this, "PLAY", centerX, centerY - 10);
-        playAgainButton = new Button(this, "PLAY AGAIN", centerX, centerY - 10);
-        exitButton = new Button(this, "EXIT", centerX, centerY + 70);
+        playButton = new Button(this, "PLAY", centerX, centerY + 80);
+        playAgainButton = new Button(this, "PLAY AGAIN", centerX, centerY + 80);
+        exitButton = new Button(this, "EXIT", centerX, centerY + 160);
     }
 
     // Baut eine frische Welt. Laeuft auch vor dem Startscreen, damit dort
@@ -54,7 +56,15 @@ public class CrossyLaneApp extends PApplet {
 
     private void endGame() {
         state = GameState.GAME_OVER;
-        highScore = Math.max(highScore, player.getScore());
+        highscores.add(playerName, player.getScore());
+    }
+
+    // Ohne Namen kein Start - sonst landen leere Eintraege in der Bestenliste.
+    private void tryStart() {
+        if (playerName.trim().isEmpty()) {
+            return;
+        }
+        startNewGame();
     }
 
     @Override
@@ -154,20 +164,18 @@ public class CrossyLaneApp extends PApplet {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(58);
-        text("CROSSY LANE", centerX, centerY - 180);
+        text("CROSSY LANE", centerX, centerY - 290);
 
-        if (highScore > 0) {
-            textSize(26);
-            text("Best: " + highScore, centerX, centerY - 100);
-        }
+        drawNameField(centerX, centerY - 200);
+        drawHighscores(centerX, centerY - 130);
 
         playButton.display();
         exitButton.display();
 
         fill(220);
         textAlign(CENTER, CENTER);
-        textSize(20);
-        text("SPACE = starten     Pfeiltasten = bewegen", centerX, centerY + 160);
+        textSize(18);
+        text("Name tippen, dann ENTER     Pfeiltasten = bewegen", centerX, centerY + 232);
     }
 
     private void drawGameOver() {
@@ -179,19 +187,69 @@ public class CrossyLaneApp extends PApplet {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(56);
-        text("GAME OVER", centerX, centerY - 200);
+        text("GAME OVER", centerX, centerY - 285);
         textSize(38);
-        text("Score: " + player.getScore(), centerX, centerY - 125);
-        textSize(26);
-        text("Best: " + highScore, centerX, centerY - 75);
+        text(playerName + ": " + player.getScore(), centerX, centerY - 205);
+
+        drawHighscores(centerX, centerY - 130);
 
         playAgainButton.display();
         exitButton.display();
 
         fill(220);
         textAlign(CENTER, CENTER);
-        textSize(20);
-        text("SPACE = nochmal", centerX, centerY + 160);
+        textSize(18);
+        text("ENTER = nochmal", centerX, centerY + 232);
+    }
+
+    // Eingabefeld fuer den Namen. Der blinkende Strich zeigt, dass hier getippt wird.
+    private void drawNameField(float centerX, float y) {
+        textAlign(CENTER, CENTER);
+        textSize(18);
+        fill(190);
+        text("DEIN NAME", centerX, y - 26);
+
+        boolean caretVisible = (frameCount / 30) % 2 == 0;
+        String shown = playerName + (caretVisible ? "_" : " ");
+
+        fill(255);
+        textSize(30);
+        text(shown, centerX, y + 6);
+
+        stroke(160);
+        strokeWeight(1);
+        line(centerX - 120, y + 26, centerX + 120, y + 26);
+        noStroke();
+    }
+
+    private void drawHighscores(float centerX, float topY) {
+        java.util.List<HighscoreEntry> top = highscores.getTop();
+
+        textAlign(CENTER, CENTER);
+        textSize(17);
+        fill(190);
+        text("BESTENLISTE", centerX, topY);
+
+        if (top.isEmpty()) {
+            textSize(18);
+            fill(150);
+            text("noch keine Eintraege", centerX, topY + 34);
+            return;
+        }
+
+        textSize(21);
+        float y = topY + 34;
+        for (int i = 0; i < top.size(); i++) {
+            HighscoreEntry entry = top.get(i);
+            fill(i == 0 ? 255 : 210);
+
+            textAlign(LEFT, CENTER);
+            text((i + 1) + ". " + entry.name(), centerX - 120, y);
+
+            textAlign(RIGHT, CENTER);
+            text(entry.score(), centerX + 120, y);
+            y += 26;
+        }
     }
 
     private void drawLanes() {
@@ -278,7 +336,7 @@ public class CrossyLaneApp extends PApplet {
 
         Button startButton = (state == GameState.START) ? playButton : playAgainButton;
         if (startButton.contains(mouseX, mouseY)) {
-            startNewGame();
+            tryStart();
         } else if (exitButton.contains(mouseX, mouseY)) {
             exit();
         }
@@ -286,8 +344,14 @@ public class CrossyLaneApp extends PApplet {
 
     @Override
     public void keyPressed() {
-        if (state != GameState.PLAYING) {
-            if (key == ' ') {
+        if (state == GameState.START) {
+            handleNameInput();
+            return;
+        }
+
+        if (state == GameState.GAME_OVER) {
+            if (key == ENTER || key == RETURN) {
+                // Name bleibt bestehen, man muss ihn nicht neu tippen.
                 startNewGame();
             }
             return;
@@ -300,6 +364,30 @@ public class CrossyLaneApp extends PApplet {
                 case UP -> player.jumpUp();
                 case DOWN -> player.jumpDown();
             }
+        }
+    }
+
+    /**
+     * Sammelt die getippten Zeichen fuer den Namen.
+     * ENTER startet - nicht mehr SPACE, denn das Leerzeichen gehoert jetzt
+     * zu den erlaubten Zeichen im Namen.
+     */
+    private void handleNameInput() {
+        if (key == ENTER || key == RETURN) {
+            tryStart();
+            return;
+        }
+        if (key == BACKSPACE) {
+            if (!playerName.isEmpty()) {
+                playerName = playerName.substring(0, playerName.length() - 1);
+            }
+            return;
+        }
+        if (key == CODED || playerName.length() >= Constants.NAME_MAX_LENGTH) {
+            return;
+        }
+        if (Character.isLetterOrDigit(key) || key == ' ') {
+            playerName += key;
         }
     }
 

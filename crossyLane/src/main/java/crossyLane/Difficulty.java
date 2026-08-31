@@ -34,12 +34,14 @@ public class Difficulty {
         return Constants.CAR_SPEED * ramp(block, Constants.CAR_SPEED_RAMP, Constants.CAR_SPEED_MAX_FACTOR);
     }
 
-    // Logs steigen flacher als Autos: ein schnelles Log traegt den Spieler
-    // sonst zu rasch an den Rand, wo er ertrinkt.
     public static float logSpeed(int block) {
         return Constants.LOG_SPEED * ramp(block, Constants.LOG_SPEED_RAMP, Constants.LOG_SPEED_MAX_FACTOR);
     }
 
+    // Tempo-Multiplikator: startet bei 1.0 und wächst pro Block um perBlock.
+    // Beispiel Auto: Block 20 ergibt 1 + 20 * 0.03 = 1.6, also 60 % schneller.
+    // Weil block stetig steigt, wird es auch innerhalb eines Levels schneller -
+    // die Levelstufen ändern nur die Anzahl, nicht das Tempo.
     private static float ramp(int block, float perBlock, float maxFactor) {
         return Math.min(1f + block * perBlock, maxFactor);
     }

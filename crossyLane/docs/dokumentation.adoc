@@ -30,16 +30,26 @@ Schritt 9: Grafiken verbessern. schönere Bilder.
 
 Schritt 10: Animationen und Sounds, jump animations...
 
+Schritt 11: Highscore Persistent machen lokal
+
+Schritt 12: Tutorial im Spiel einbauen
+
 
 == Schwierigkeiten
 - Kamera View: da musste man zuerst schauen, wie man die kamera überhaupt will im sinn von was soll im zentrum stehen. eine Schwierigkeit war es den spieler zwar im zentrum zu stellen, aber es immernoch so auszusehen lassen, als würd sich der spieler bewegen und nicht die Map.
 - Hitbox: Es gab mehrere Optionen Wie man die Hitbox checkt und wo verglichen werden soll
 - BoundingBox: Ich wusste nicht wie ich die genaue Bounding Box Berechenen kann.
+- GameOver: hat die die Welt nicht eingefroren wenn das spiel schon vorbei war.
+- Unterschiedliche Tempos: Die Fahrzeuge hatten unterschiedliche Grössen und deshalb war der gleiche Speedfaktor aber doch nicht gleich und man sah den unterschied während dem spielen.
+- Spieler auf Log: Der Spieler stand nicht perfekt auf dem log sondern es sah so aus als wäre er nur so 2d mässig mitgezogen werden.
 
 == Lösungsweg
 - Kamera View: zuerst war der Gedankengang, dass wen auf der Map die sachen sich bewegen dann wird es schon besser aussehen. aber der ansatz der auch im Inspirations Processing Game gebraucht wurde: Die kamere scrollte versetzt zum player. also mit leichtem delay zur bewegung des Spielers. Das habe ich mithilfe KI gelöst. unzwar nimmt man ein Target X nach jedem jump und pro frame kommt man immer näher ans target
 - Hitbox: Ich habe in der App Klasse es implementiert und nur die x achse in betracht gezogen und die Lane/Spur statt y achse. da man nur auf spuren jumpen kann. Auch habe ich die methode für beide (logs und car) ausgelagert so dass für beide die Methode brauchen kann.
-- Die Ki hat mir im FileLoader die Berechenung gemacht.
+- Bounding Box:  Die Ki hat mir im FileLoader die Berechenung gemacht.
+- GameOver: Ich habe das car.update() (die berechnungen) aus dem zeichnen herausgenommen. updateWorld() als eigene Methode. Seit dem gibt es eine klare struktur zwischen berechnungen und zeichnen.
+- Unterschiedliche Tempo: Der Level-Ramp war nicht das Problem sondern es lag am TypFaktor. Truck: 0.7 und motorrad 1.4. doppeltes Tempo zwischen zwei spuren. das musste weg. jetzt unterscheiden sich die Typen anhnad ihrer Grösse und nicht tempo.
+- Spieler auf log: um halbe Spielerhöh plus halbe Stammhöhe anheben, minus 8 px damit die Füsse leicht einsinken. Wichtig war die Stammhöh zu nehmen weil die drei Log unterschiedlich dick sind.
 
 == Endresultat
 

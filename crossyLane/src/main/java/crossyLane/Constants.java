@@ -41,13 +41,13 @@ public class Constants {
     static final int LOGS_PER_LANE_LEVEL_1 = 4;
 
     //Levels
-    static final int LEVEL_2_BLOCK = 10;
-    static final int LEVEL_3_BLOCK = 22;
+    static final int LEVEL_2_BLOCK = 20;
+    static final int LEVEL_3_BLOCK = 40;
     static final float CAR_SPEED_RAMP = 0.03f;
     static final float CAR_SPEED_MAX_FACTOR = 2.0f;
     static final float LOG_SPEED_RAMP = 0.02f;
     static final float LOG_SPEED_MAX_FACTOR = 1.6f;
-    // Jede Spur bekommt ihr eigenes Tempo in dieser Bandbreite.
+    // Jede Spur bekommt ihr eigenes Tempo in dieser Bandbreite
     static final float SPEED_VARIATION_MIN = 0.92f;
     static final float SPEED_VARIATION_MAX = 1.08f;
 
@@ -63,6 +63,11 @@ public class Constants {
     static final float ROAD_DASH_LENGTH = 30;
     static final float ROAD_DASH_GAP = 20;
     static final float ROAD_DASH_WEIGHT = 3;
+
+    //Highscore
+    static final String HIGHSCORE_FILE = "highscores.txt";
+    static final int HIGHSCORE_COUNT = 5;
+    static final int NAME_MAX_LENGTH = 12;
 
     //HUD
     static final float SCORE_MARGIN = 18;
