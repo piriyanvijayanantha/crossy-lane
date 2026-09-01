@@ -1,6 +1,7 @@
 package crossyLane;
 
 import processing.core.PApplet;
+import processing.sound.SoundFile;
 
 public class CrossyLaneApp extends PApplet {
     private Player player;
@@ -31,7 +32,14 @@ public class CrossyLaneApp extends PApplet {
         createButtons();
         highscores = new HighscoreStore(this);
         resetWorld();
+        startMusic();
         state = GameState.START;
+    }
+
+    private void startMusic() {
+        SoundFile music = FileLoader.getSoundFile(this, Constants.MUSIC_FILE);
+        music.amp(Constants.MUSIC_VOLUME);
+        music.loop();
     }
 
     private void createButtons() {

@@ -63,6 +63,11 @@ public class Constants {
     static final float ROAD_DASH_LENGTH = 30;
     static final float ROAD_DASH_GAP = 20;
     static final float ROAD_DASH_WEIGHT = 3;
+    //sound
+    static final String MUSIC_FILE = "friday is desparate inst ab 96 bpm.mp3";
+    static final String JUMP_SOUND_FILE = "bounce.mp3";
+    static final float MUSIC_VOLUME = 0.35f;
+    static final float JUMP_VOLUME = 0.6f;
 
     //Highscore
     static final String HIGHSCORE_FILE = "highscores.txt";

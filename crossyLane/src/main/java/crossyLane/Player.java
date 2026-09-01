@@ -2,6 +2,7 @@ package crossyLane;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.sound.SoundFile;
 
 import static crossyLane.FileLoader.getImage;
 
@@ -28,6 +29,8 @@ public class Player {
     private float rideTargetY;
     private float rideOffsetY;
 
+    private final SoundFile jumpSound;
+
     public Player(PApplet pApplet) {
         this.pApplet = pApplet;
 
@@ -48,6 +51,9 @@ public class Player {
         jumpTimer = 0;
         rideTargetY = 0;
         rideOffsetY = 0;
+
+        jumpSound = FileLoader.getSoundFile(pApplet, Constants.JUMP_SOUND_FILE);
+        jumpSound.amp(Constants.JUMP_VOLUME);
     }
 
     public int getLaneIndex() {
@@ -117,12 +123,21 @@ public class Player {
         maxLaneReached = Math.max(maxLaneReached, laneIndex);
         current = back;
         jumpTimer = Constants.JUMP_FRAMES;
+        playJumpSound();
     }
 
     public void jumpDown() {
         laneIndex = Math.max(0, laneIndex - 1);
         current = front;
         jumpTimer = Constants.JUMP_FRAMES;
+        playJumpSound();
+    }
+
+    // stop() davor, damit bei schnellen Spruengen sauber neu angesetzt wird
+    // statt dass sich der Ton mit sich selbst ueberlagert.
+    private void playJumpSound() {
+        jumpSound.stop();
+        jumpSound.play();
     }
 
     public void display() {
